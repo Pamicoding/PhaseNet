@@ -201,7 +201,7 @@ class DataReader:
         elif format == "hdf5":
             self.h5 = h5py.File(kwargs["hdf5_file"], "r", libver="latest", swmr=True)
             self.h5_data = self.h5[kwargs["hdf5_group"]]
-            self.data_list = list(self.h5_data.keys())
+            self.data_list = list(self.h5_data) # removing the .keys() to prevent the attribute error
             self.num_data = len(self.data_list)
         elif format == "s3":
             self.s3fs = s3fs.S3FileSystem(
@@ -346,7 +346,7 @@ class DataReader:
         end_time = max([st.stats.endtime for st in stream])
         stream = stream.trim(begin_time, end_time, pad=True, fill_value=0)
 
-        comp = ["3", "2", "1", "E", "N", "U", "V", "Z"]
+        comp = ["3", "2", "1", "E", "N", "U", "V", "Z", "F"]
         order = {key: i for i, key in enumerate(comp)}
         comp2idx = {
             "3": 0,
@@ -357,6 +357,7 @@ class DataReader:
             "Z": 2,
             "U": 0,
             "V": 1,
+            "F": 0,
         }  ## only for cases less than 3 components
 
         station_ids = defaultdict(list)
@@ -431,7 +432,7 @@ class DataReader:
 
             station_ids = list(set(station_ids))
             if len(station_ids) > 1:
-                print(f"{station_ids = }")
+                print(f"{station_ids}")
                 raise
             assert (len(station_ids) == 1, f"Error: {fname} has multiple stations {station_ids}")
 
