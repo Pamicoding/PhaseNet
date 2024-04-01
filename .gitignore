@@ -6,6 +6,9 @@ phasenet/test_data
 site/
 output*/
 result*/
+data/
+data_2/
+20230102_MiDAS/
 *.pyc
 *.png
 *.egg-info
@@ -13,4 +16,5 @@ result*/
 ._.DS_Store
 .DS_Store
 test_data
+test_data.zip
 
